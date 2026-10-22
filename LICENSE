@@ -1,0 +1,113 @@
+Copyright (c) 2026 Yusuke Fujinami. All rights reserved.
+
+(日本語の本文は英語の本文の後にあります。両者に相違がある場合は、日本語の本文が優先します。)
+
+================================================================================
+English
+================================================================================
+
+1. Reservation of rights
+   This repository and all of its contents (source code, templates, tests, scripts,
+   documentation, and evaluation records), except for the third-party materials listed in
+   Section 4, are the copyrighted work of Yusuke Fujinami (the "Author"). All rights are
+   reserved. No license or other right is granted, whether expressly, by implication, by
+   estoppel, or otherwise, except as stated in Section 2.
+
+2. What you may do
+   (a) View this repository on GitHub, and use and fork it only to the extent that the GitHub
+       Terms of Service ("Section D.5 License Grant to Other Users") grant to GitHub users for
+       public repositories, and only through GitHub's functionality.
+   (b) Any use that is permitted by applicable copyright law without the Author's permission
+       (for example, quotation within the limits of the law).
+
+3. What you may not do without the Author's prior written permission
+   Copy, reproduce, modify, adapt, translate, create derivative works of, distribute, publish,
+   sublicense, sell, or otherwise use the contents of this repository, in whole or in part,
+   outside the scope of Section 2. This includes, without limitation, use for commercial
+   purposes, use in other products or services, and use as data for training machine
+   learning models. Forks made under Section 2(a) do not grant any additional rights.
+
+4. Third-party materials (not owned by the Author)
+   (a) Drug names used in the synthetic data and in some evaluation records are derived from
+       the "Drug Price Standard listed items" published by the Ministry of Health, Labour and
+       Welfare of Japan (https://www.mhlw.go.jp/topics/2026/04/tp20260401-01.html), which is
+       provided under the Public Data License (Version 1.0) (PDL1.0). The source data file
+       itself is not included in this repository. Use of those portions is governed by PDL1.0,
+       not by this notice. This repository is not created or endorsed by the Ministry.
+   (b) Drug product names are trademarks or registered trademarks of their respective owners.
+       Amazon Web Services, AWS, Amazon Bedrock, Claude, Anthropic, GitHub, and Tesseract are
+       trademarks of their respective owners. Their use here is for identification only and
+       does not imply endorsement.
+   (c) Third-party software referenced by this repository (for example, packages listed in
+       pyproject.toml and uv.lock) is governed by its own license and is not redistributed here.
+
+5. Not a medical device; no clinical use
+   This repository is an evaluation of OCR on synthetic (fictitious) prescriptions for personal
+   learning. It is not a medical device and must not be used for diagnosis, treatment,
+   dispensing, or any other clinical or pharmaceutical decision.
+
+6. No warranty; limitation of liability
+   THE CONTENTS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+   PURPOSE, ACCURACY, AND NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE AUTHOR
+   SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM OR IN CONNECTION
+   WITH THE CONTENTS OR THEIR USE.
+
+7. Governing law
+   This notice is governed by the laws of Japan.
+
+8. Permission requests
+   To request permission beyond Section 2, contact the Author through the GitHub account that
+   owns this repository.
+
+================================================================================
+日本語
+================================================================================
+
+1. 権利の留保
+   このリポジトリとその内容(ソースコード、テンプレート、テスト、スクリプト、文書、評価の記録)は、
+   第4条の第三者の素材を除き、Yusuke Fujinami(以下「作者」)の著作物です。すべての
+   権利を作者が留保します。第2条に定めるものを除き、明示・黙示・禁反言その他いかなる形でも、
+   利用の許諾その他の権利を与えません。
+
+2. できること
+   (a) GitHub 上でこのリポジトリを閲覧すること。また、公開リポジトリについて GitHub の利用規約
+       (「D.5 License Grant to Other Users」)が GitHub の利用者に認める範囲で、GitHub の機能を
+       通じてのみ、利用およびフォークすること。
+   (b) 著作権法などの法令により、作者の許諾なく認められる利用(法の範囲内の引用など)。
+
+3. 作者の事前の書面による許諾なしにできないこと
+   第2条の範囲を超えて、このリポジトリの内容の全部または一部を、複製、改変、翻案、翻訳、
+   二次的著作物の作成、配布、公開、再許諾、販売その他の方法で利用すること。商用の利用、他の
+   製品やサービスでの利用、機械学習モデルの学習データとしての利用を含みますが、これらに限り
+   ません。第2条(a)によるフォークは、それ以上の権利を与えるものではありません。
+
+4. 第三者の素材(作者の権利に属さないもの)
+   (a) 合成データと一部の評価記録に含まれる薬剤名は、厚生労働省「薬価基準収載品目リスト及び
+       後発医薬品に関する情報について」(https://www.mhlw.go.jp/topics/2026/04/tp20260401-01.html)
+       を加工して作成したものです。元の情報は公共データ利用規約(第1.0版)(PDL1.0)の下で
+       提供されています。元のデータファイルは、このリポジトリに含めていません。この部分の利用
+       には、この文書ではなく PDL1.0 が適用されます。このリポジトリは、厚生労働省が作成した
+       ものではなく、同省の承認を得たものでもありません。
+   (b) 医薬品の製品名は、各権利者の商標または登録商標です。Amazon Web Services、AWS、
+       Amazon Bedrock、Claude、Anthropic、GitHub、Tesseract は、各権利者の商標です。ここでの
+       使用は識別のためであり、各権利者による推奨を意味しません。
+   (c) このリポジトリが参照する第三者のソフトウェア(pyproject.toml と uv.lock に記載の
+       パッケージなど)には、それぞれのライセンスが適用されます。このリポジトリでは再配布して
+       いません。
+
+5. 医療機器ではないこと、医療に使わないこと
+   このリポジトリは、架空の処方箋を使って OCR を評価する、個人の学習用のものです。医療機器
+   ではありません。診断、治療、調剤その他の臨床・薬学上の判断に使わないでください。
+
+6. 無保証と責任の制限
+   内容は「現状のまま」提供し、商品性、特定の目的への適合性、正確性、権利の非侵害を含め、
+   明示・黙示を問わず、いかなる保証もしません。法令で認められる最大の範囲で、作者は、内容または
+   その利用に起因または関連する請求、損害その他の責任を負いません。
+
+7. 準拠法
+   この文書は、日本法に準拠します。
+
+8. 許諾の申し出
+   第2条を超える利用の許諾を希望する場合は、このリポジトリを所有する GitHub アカウントを
+   通じて作者に連絡してください。
