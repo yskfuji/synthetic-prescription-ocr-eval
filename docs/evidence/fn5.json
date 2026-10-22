@@ -1,0 +1,65 @@
+{
+ "test": "FN5",
+ "checkedAt": "2026-10-22",
+ "checks": {
+  "AccountAccessKeysPresent_0": {
+   "value": 0,
+   "pass": true
+  },
+  "iam_users_active_access_keys_0": {
+   "users": 0,
+   "active_keys": 0,
+   "pass": true
+  },
+  "gitleaks_public_repo_history_0": {
+   "repo": "yskfuji/synthetic-prescription-ocr-eval",
+   "result": "no leaks found",
+   "pass": true
+  },
+  "stack_changes_by_temporary_credentials": {
+   "events": [
+    {
+     "event": "CreateChangeSet",
+     "time": "2026-10-22T05:25:56Z",
+     "stack": "aws-sam-cli-managed-default",
+     "principalType": "AssumedRole",
+     "credential": "temporary"
+    },
+    {
+     "event": "ExecuteChangeSet",
+     "time": "2026-10-22T05:26:13Z",
+     "stack": "aws-sam-cli-managed-default",
+     "principalType": "AssumedRole",
+     "credential": "temporary"
+    },
+    {
+     "event": "CreateChangeSet",
+     "time": "2026-10-22T05:26:52Z",
+     "stack": "kusuri-ai",
+     "principalType": "AssumedRole",
+     "credential": "temporary"
+    },
+    {
+     "event": "ExecuteChangeSet",
+     "time": "2026-10-22T05:26:58Z",
+     "stack": "kusuri-ai",
+     "principalType": "AssumedRole",
+     "credential": "temporary"
+    }
+   ],
+   "pass": true
+  },
+  "github_actions_ci_without_aws_credentials": {
+   "run": "https://github.com/yskfuji/synthetic-prescription-ocr-eval/actions/runs/39775893439",
+   "permissions": "contents: read",
+   "steps": [
+    "pytest",
+    "sam validate --lint"
+   ],
+   "conclusion": "success",
+   "pass": true
+  }
+ },
+ "note": "OIDC デプロイは project の SCP が IAM の OIDC プロバイダーを拒否するため行わない(合格基準の変更履歴を参照)。",
+ "pass": true
+}

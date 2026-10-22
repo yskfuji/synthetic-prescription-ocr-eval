@@ -1,0 +1,34 @@
+{
+ "test": "FN2",
+ "at": "2026-10-22T08:46:13+00:00",
+ "image": "dev-000_original.png",
+ "checks": {
+  "unsigned_403": {
+   "status": 403,
+   "pass": true
+  },
+  "no_permission_403": {
+   "status": 403,
+   "pass": true
+  },
+  "temp_role_deleted": {
+   "role": "kusuri-fn2-noperm-1792658758",
+   "pass": true
+  },
+  "signed_200_matches_dynamodb": {
+   "status": 200,
+   "items": 4,
+   "pass": true
+  },
+  "bad_name_400": {
+   "status": 400,
+   "pass": true
+  },
+  "missing_404_from_lambda": {
+   "status": 404,
+   "error": "結果がありません",
+   "pass": true
+  }
+ },
+ "pass": true
+}

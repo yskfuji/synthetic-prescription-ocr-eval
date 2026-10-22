@@ -1,0 +1,56 @@
+{
+ "test": "FN1",
+ "split": "dev",
+ "runId": "dev-20261022T155331Z",
+ "promptVersion": "v1-draft",
+ "uploadPerMinute": 8,
+ "checkedAt": "2026-10-22T16:03:25+00:00",
+ "checks": {
+  "all_items_present": {
+   "items": 120,
+   "expected": 120,
+   "pass": true
+  },
+  "required_attributes": {
+   "items_missing_attrs": 0,
+   "pass": true
+  },
+  "error_logs_0": {
+   "counts": {
+    "HaikuLogGroup": 0,
+    "SonnetLogGroup": 0
+   },
+   "pass": true
+  },
+  "dlq_not_increased": {
+   "before": {
+    "HaikuDlq": 1,
+    "SonnetDlq": 1
+   },
+   "after": {
+    "HaikuDlq": 1,
+    "SonnetDlq": 1
+   },
+   "pass": true
+  }
+ },
+ "report": {
+  "parseOk_rate": {
+   "haiku": 1.0,
+   "sonnet": 1.0
+  },
+  "stopReason": {
+   "haiku": {
+    "end_turn": 60
+   },
+   "sonnet": {
+    "end_turn": 60
+   }
+  },
+  "receiveCount_max": {
+   "haiku": 1,
+   "sonnet": 1
+  }
+ },
+ "pass": true
+}

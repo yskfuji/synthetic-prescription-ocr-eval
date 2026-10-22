@@ -1,0 +1,76 @@
+{
+ "test": "FN1",
+ "split": "eval",
+ "runId": "eval-20261022T162946Z",
+ "promptVersion": "v1",
+ "tag": "prereg-v1",
+ "gitSha": "fe7001869b8b76f77a5bd280fa921e86bc893f71",
+ "lambdaCodeSha256": {
+  "OcrHaiku": "9SHH3wW8bmmUyPhIms7ZboWu1Be2odV1gpFhngzd/ZU=",
+  "OcrSonnet": "9SHH3wW8bmmUyPhIms7ZboWu1Be2odV1gpFhngzd/ZU="
+ },
+ "uploadPerMinute": 8,
+ "interruption": {
+  "what": "アップロード中に aws login の認証(12時間)が切れ、242/300 枚で停止した(ExpiredToken)",
+  "resumedAt": "2026-10-22T17:26:55+00:00",
+  "resumedImages": 58,
+  "how": "本人の決定で、同じ runId のまま残りの画像だけを追加でアップロードした。結果を見る前で、コードとプロンプトは変えていない(作業ツリー clean、HEAD はタグ prereg-v1)"
+ },
+ "checkedAt": "2026-10-22T17:37:56+00:00",
+ "checks": {
+  "all_items_present": {
+   "items": 600,
+   "expected": 600,
+   "pass": true
+  },
+  "required_attributes": {
+   "items_missing_attrs": 0,
+   "pass": true
+  },
+  "error_logs_0": {
+   "counts": {
+    "HaikuLogGroup": 0,
+    "SonnetLogGroup": 0
+   },
+   "pass": true
+  },
+  "dlq_not_increased": {
+   "before": {
+    "HaikuDlq": 1,
+    "SonnetDlq": 1
+   },
+   "after": {
+    "HaikuDlq": 1,
+    "SonnetDlq": 1
+   },
+   "pass": true
+  }
+ },
+ "report": {
+  "parseOk_rate": {
+   "haiku": 1.0,
+   "sonnet": 1.0
+  },
+  "stopReason": {
+   "haiku": {
+    "end_turn": 300
+   },
+   "sonnet": {
+    "end_turn": 300
+   }
+  },
+  "receiveCount_max": {
+   "haiku": 1,
+   "sonnet": 1
+  },
+  "promptHash": {
+   "haiku": [
+    "9b863683476a7a34"
+   ],
+   "sonnet": [
+    "9edeae0ca67a5229"
+   ]
+  }
+ },
+ "pass": true
+}

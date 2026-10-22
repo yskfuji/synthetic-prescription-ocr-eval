@@ -1,0 +1,289 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  合成処方箋の読み取り評価基盤(Claude 2エンジン)。医療機器ではない。診療・調剤の判断に使わない。
+  S3(画像) -> SNS -> SQS x2 -> Lambda x2(Haiku 4.5 / Sonnet 4.6) -> DynamoDB、HTTP API(IAM 認証)で結果を返す。
+
+Parameters:
+  # 基盤モデルの ID。推論は au. プロファイル(au.<ID>)で行う。
+  # 行き先は ap-southeast-2 と ap-southeast-4(2026-10-22 に GetInferenceProfile で確認。試験呼び出しも成功)。
+  # 5.5 世代はこのアカウントの TPM 上限が0で呼べない。また5.5世代は既定以外の temperature で 400 になる。
+  HaikuFoundationModel:
+    Type: String
+    Default: anthropic.claude-haiku-4-5-20251001-v1:0
+  SonnetFoundationModel:
+    Type: String
+    Default: anthropic.claude-sonnet-4-6
+  # dev で決めて凍結する。空ならモデルの既定
+  Effort:
+    Type: String
+    Default: ""
+    AllowedValues: ["", low, medium, high]
+  # 空なら送らない(5.5 世代に戻す場合は空にする)
+  Temperature:
+    Type: String
+    Default: "0"
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    CodeUri: src/
+    MemorySize: 512
+    Timeout: 120 # 1件の処理(思考あり)に余裕を持たせる。BatchSize 1 と組み合わせる
+    Tracing: PassThrough
+
+Resources:
+  # ---------- 入力の S3 ----------
+  InputBucket:
+    Type: AWS::S3::Bucket
+    DependsOn: ImageTopicPolicy
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-input-${AWS::AccountId}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: {SSEAlgorithm: AES256}
+      LifecycleConfiguration:
+        Rules:
+          - {Id: expire-30d, Status: Enabled, ExpirationInDays: 30}
+      NotificationConfiguration:
+        TopicConfigurations:
+          - Event: s3:ObjectCreated:*
+            Topic: !Ref ImageTopic
+            Filter:
+              S3Key:
+                Rules:
+                  - {Name: prefix, Value: runs/}
+                  - {Name: suffix, Value: .png}
+
+  InputBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref InputBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: s3:*
+            Resource: [!GetAtt InputBucket.Arn, !Sub "${InputBucket.Arn}/*"]
+            Condition: {Bool: {"aws:SecureTransport": "false"}}
+
+  # ---------- S3 の通知を2つのキューに配る SNS ----------
+  # S3 が発行できるよう、AWS 管理キーでの暗号化は付けない(内容は画像のキー名だけの合成データ)。
+  ImageTopic:
+    Type: AWS::SNS::Topic
+
+  ImageTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics: [!Ref ImageTopic]
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: {Service: s3.amazonaws.com}
+            Action: sns:Publish
+            Resource: !Ref ImageTopic
+            Condition:
+              ArnLike: {"aws:SourceArn": !Sub "arn:aws:s3:::${AWS::StackName}-input-${AWS::AccountId}"}
+              StringEquals: {"aws:SourceAccount": !Ref AWS::AccountId}
+
+  # ---------- 結果の保存先 ----------
+  ResultsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - {AttributeName: imageKey, AttributeType: S}
+        - {AttributeName: engineRun, AttributeType: S} # "<engine>#<runId>"
+      KeySchema:
+        - {AttributeName: imageKey, KeyType: HASH}
+        - {AttributeName: engineRun, KeyType: RANGE}
+      SSESpecification: {SSEEnabled: true}
+
+  # ---------- エンジン1: Claude Haiku 5.5 ----------
+  HaikuDlq:
+    Type: AWS::SQS::Queue
+    Properties:
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+  HaikuQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      SqsManagedSseEnabled: true
+      VisibilityTimeout: 720 # 関数のタイムアウト(120秒)の6倍(Lambda 公式の推奨)
+      RedrivePolicy: {deadLetterTargetArn: !GetAtt HaikuDlq.Arn, maxReceiveCount: 5} # 公式の推奨は5以上
+  HaikuQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref HaikuQueue]
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: {Service: sns.amazonaws.com}
+            Action: sqs:SendMessage
+            Resource: !GetAtt HaikuQueue.Arn
+            Condition: {ArnEquals: {"aws:SourceArn": !Ref ImageTopic}}
+  HaikuSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref ImageTopic
+      Protocol: sqs
+      Endpoint: !GetAtt HaikuQueue.Arn
+      RawMessageDelivery: true
+  HaikuLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {RetentionInDays: 14}
+  OcrHaiku:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: kusuri_eval.handlers.ocr.handler
+      LoggingConfig: {LogGroup: !Ref HaikuLogGroup}
+      Environment:
+        Variables:
+          ENGINE: haiku
+          MODEL_ID: !Sub au.${HaikuFoundationModel}
+          EFFORT: !Ref Effort
+          TEMPERATURE: !Ref Temperature
+          TABLE_NAME: !Ref ResultsTable
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - {Effect: Allow, Action: s3:GetObject, Resource: !Sub "${InputBucket.Arn}/runs/*"}
+            - {Effect: Allow, Action: [dynamodb:GetItem, dynamodb:PutItem], Resource: !GetAtt ResultsTable.Arn}
+            # au. の行き先は ap-southeast-2 と ap-southeast-4(GetInferenceProfile で確認済み)。両方の基盤モデルを許可する
+            - Effect: Allow
+              Action: bedrock:InvokeModel
+              Resource:
+                - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/au.${HaikuFoundationModel}
+                - !Sub arn:aws:bedrock:ap-southeast-2::foundation-model/${HaikuFoundationModel}
+                - !Sub arn:aws:bedrock:ap-southeast-4::foundation-model/${HaikuFoundationModel}
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt HaikuQueue.Arn
+            BatchSize: 1 # 1件ずつ処理し、Lambda の実行時間を1枚の時間と一致させる
+            FunctionResponseTypes: [ReportBatchItemFailures]
+            ScalingConfig: {MaximumConcurrency: 2} # RPM 上限10に合わせて最小値にする
+
+  # ---------- エンジン2: Claude Sonnet 5.5 ----------
+  SonnetDlq:
+    Type: AWS::SQS::Queue
+    Properties:
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+  SonnetQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      SqsManagedSseEnabled: true
+      VisibilityTimeout: 720
+      RedrivePolicy: {deadLetterTargetArn: !GetAtt SonnetDlq.Arn, maxReceiveCount: 5}
+  SonnetQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref SonnetQueue]
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: {Service: sns.amazonaws.com}
+            Action: sqs:SendMessage
+            Resource: !GetAtt SonnetQueue.Arn
+            Condition: {ArnEquals: {"aws:SourceArn": !Ref ImageTopic}}
+  SonnetSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref ImageTopic
+      Protocol: sqs
+      Endpoint: !GetAtt SonnetQueue.Arn
+      RawMessageDelivery: true
+  SonnetLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {RetentionInDays: 14}
+  OcrSonnet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: kusuri_eval.handlers.ocr.handler
+      LoggingConfig: {LogGroup: !Ref SonnetLogGroup}
+      Environment:
+        Variables:
+          ENGINE: sonnet
+          MODEL_ID: !Sub au.${SonnetFoundationModel}
+          EFFORT: !Ref Effort
+          TEMPERATURE: !Ref Temperature
+          TABLE_NAME: !Ref ResultsTable
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - {Effect: Allow, Action: s3:GetObject, Resource: !Sub "${InputBucket.Arn}/runs/*"}
+            - {Effect: Allow, Action: [dynamodb:GetItem, dynamodb:PutItem], Resource: !GetAtt ResultsTable.Arn}
+            - Effect: Allow
+              Action: bedrock:InvokeModel
+              Resource:
+                - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/au.${SonnetFoundationModel}
+                - !Sub arn:aws:bedrock:ap-southeast-2::foundation-model/${SonnetFoundationModel}
+                - !Sub arn:aws:bedrock:ap-southeast-4::foundation-model/${SonnetFoundationModel}
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt SonnetQueue.Arn
+            BatchSize: 1 # 1件ずつ処理し、Lambda の実行時間を1枚の時間と一致させる
+            FunctionResponseTypes: [ReportBatchItemFailures]
+            ScalingConfig: {MaximumConcurrency: 2} # RPM 上限10に合わせて最小値にする
+
+  # ---------- 結果を返す API(IAM 認証) ----------
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {RetentionInDays: 14}
+  ApiFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {RetentionInDays: 14}
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Auth:
+        EnableIamAuthorizer: true
+        DefaultAuthorizer: AWS_IAM
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 5
+      AccessLogSettings:
+        DestinationArn: !GetAtt ApiLogGroup.Arn
+        Format: '{"requestId":"$context.requestId","status":"$context.status","routeKey":"$context.routeKey","caller":"$context.identity.userArn"}'
+  ResultsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: kusuri_eval.handlers.api.handler
+      Timeout: 10
+      LoggingConfig: {LogGroup: !Ref ApiFunctionLogGroup}
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ResultsTable
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - {Effect: Allow, Action: dynamodb:Query, Resource: !GetAtt ResultsTable.Arn}
+      Events:
+        GetResults:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /results/{image}
+            Method: GET
+
+Outputs:
+  ApiUrl: {Value: !Sub "https://${Api}.execute-api.${AWS::Region}.amazonaws.com"}
+  InputBucketName: {Value: !Ref InputBucket}
+  ResultsTableName: {Value: !Ref ResultsTable}
+  HaikuDlqUrl: {Value: !Ref HaikuDlq}
+  SonnetDlqUrl: {Value: !Ref SonnetDlq}

@@ -1,0 +1,16 @@
+{
+ "run": "fn4-20261022T084700Z",
+ "sentAt": "2026-10-22T08:47:00+00:00",
+ "poisonKey": "runs/fn4-20261022T084700Z/dev/dev-999_original.png",
+ "normalKey": "not-a-run/fn4-20261022T084700Z.txt",
+ "messages": {
+  "haiku": {
+   "poison": "666c13f1-5ab9-4314-83e6-da129da7ed6b",
+   "normal": "5664c792-035c-44c9-a86b-b47015b972ab"
+  },
+  "sonnet": {
+   "poison": "ad0484d0-9a65-403e-8b97-cab59e3d12ae",
+   "normal": "50be1181-0bf3-4ab0-894a-29a4d65a594a"
+  }
+ }
+}

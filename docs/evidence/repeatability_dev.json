@@ -1,0 +1,24 @@
+{
+ "test": "repeatability",
+ "split": "dev",
+ "runs": [
+  "dev-20261022T160534Z",
+  "dev-20261022T161843Z"
+ ],
+ "promptHash": {
+  "haiku": "9b863683476a7a34",
+  "sonnet": "9edeae0ca67a5229"
+ },
+ "temperature": 0,
+ "haiku": {
+  "exact_agreement": 1.0,
+  "compared": 540,
+  "max_cell_accuracy_diff": 0.0
+ },
+ "sonnet": {
+  "exact_agreement": 1.0,
+  "compared": 540,
+  "max_cell_accuracy_diff": 0.0
+ },
+ "note": "報告のみの指標(合否に使わない)。eval は1回だけ実行するため、eval の信頼区間には実行ごとのばらつきが含まれない。"
+}

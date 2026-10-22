@@ -1,0 +1,26 @@
+{
+ "test": "FN4",
+ "run": "fn4-20261022T084700Z",
+ "sentAt": "2026-10-22T08:47:00+00:00",
+ "checkedAt": "2026-10-22T09:47:06+00:00",
+ "maxReceiveCount": 5,
+ "visibilityTimeoutSec": 720,
+ "result": {
+  "haiku": {
+   "poison_in_dlq": true,
+   "normal_in_dlq": false,
+   "main_queue_remaining": 0
+  },
+  "sonnet": {
+   "poison_in_dlq": true,
+   "normal_in_dlq": false,
+   "main_queue_remaining": 0
+  }
+ },
+ "pass": true,
+ "lambdaErrorLogs": {
+  "haiku": 5,
+  "sonnet": 5
+ },
+ "note": "毒メッセージは各エンジンで5回処理(ERROR ログ5件)された後に DLQ へ移った。S3 は ListBucket 権限のない主体には存在しないキーでも AccessDenied を返すため、エラーは AccessDenied(想定どおり)。"
+}

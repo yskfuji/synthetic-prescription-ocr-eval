@@ -1,0 +1,548 @@
+{
+ "split": "eval",
+ "git_sha": "fe7001869b8b76f77a5bd280fa921e86bc893f71",
+ "prompt_hashes": [
+  "9b863683476a7a34",
+  "9edeae0ca67a5229"
+ ],
+ "n_prescriptions": 100,
+ "scores": {
+  "haiku": {
+   "original": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.9466666666666667,
+      "ci95": [
+       0.9233333333333333,
+       0.97
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.5994,
+    "seconds_p95": 2.2264,
+    "cost_total_usd": 0.234641,
+    "cost_max_usd": 0.0026125
+   },
+   "tilt": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.9333333333333333,
+      "ci95": [
+       0.9066666666666666,
+       0.9566666666666667
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.64,
+    "seconds_p95": 2.0078,
+    "cost_total_usd": 0.2337665,
+    "cost_max_usd": 0.0026125
+   },
+   "noise": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.9433333333333334,
+      "ci95": [
+       0.9166666666666666,
+       0.97
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.8076,
+    "seconds_p95": 3.0308,
+    "cost_total_usd": 0.2342945,
+    "cost_max_usd": 0.0026125
+   }
+  },
+  "sonnet": {
+   "original": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.858,
+    "seconds_p95": 2.1458,
+    "cost_total_usd": 0.682077,
+    "cost_max_usd": 0.0071775
+   },
+   "tilt": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.8689,
+    "seconds_p95": 2.2317,
+    "cost_total_usd": 0.681516,
+    "cost_max_usd": 0.0071775
+   },
+   "noise": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "end_turn": 100
+    },
+    "seconds_p50": 1.9777,
+    "seconds_p95": 2.1802,
+    "cost_total_usd": 0.681516,
+    "cost_max_usd": 0.0071775
+   }
+  },
+  "tesseract": {
+   "original": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.8933333333333333,
+      "ci95": [
+       0.8566666666666667,
+       0.9266666666666666
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "local": 100
+    },
+    "seconds_p50": 0.5825057914480567,
+    "seconds_p95": 0.6952090421691537,
+    "cost_total_usd": null,
+    "cost_max_usd": null
+   },
+   "tilt": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.38333333333333336,
+      "ci95": [
+       0.3233333333333333,
+       0.44666666666666666
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 0.82,
+      "ci95": [
+       0.7666666666666667,
+       0.8666666666666667
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 0.91,
+      "ci95": [
+       0.8733333333333333,
+       0.9433333333333334
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 1,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "local": 100
+    },
+    "seconds_p50": 0.6110012922435999,
+    "seconds_p95": 0.7147325831465423,
+    "cost_total_usd": null,
+    "cost_max_usd": null
+   },
+   "noise": {
+    "accuracy": {
+     "drug": {
+      "accuracy": 0.8766666666666667,
+      "ci95": [
+       0.8333333333333334,
+       0.9133333333333333
+      ],
+      "ci_method": "cluster_bootstrap",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "dose": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     },
+     "days": {
+      "accuracy": 1.0,
+      "ci95": [
+       0.9637833073548236,
+       1.0
+      ],
+      "ci_method": "clopper_pearson_prescription",
+      "n_prescriptions": 100,
+      "n_lines": 300
+     }
+    },
+    "missing_results": 0,
+    "parse_fail": 0,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "stop_reasons": {
+     "local": 100
+    },
+    "seconds_p50": 0.6206367085687816,
+    "seconds_p95": 0.7547086249105632,
+    "cost_total_usd": null,
+    "cost_max_usd": null
+   }
+  }
+ },
+ "verdict": {
+  "q1": {
+   "haiku": {
+    "pass": true,
+    "unconfirmed_cells": []
+   },
+   "sonnet": {
+    "pass": true,
+    "unconfirmed_cells": []
+   },
+   "pass": true
+  },
+  "q2": {
+   "haiku": {
+    "p95_max": 3.0308,
+    "pass": true
+   },
+   "sonnet": {
+    "p95_max": 2.2317,
+    "pass": true
+   }
+  },
+  "q3": {
+   "haiku": {
+    "total_usd": 0.7027019999999999,
+    "per_image_usd": 0.0023423399999999996,
+    "pass_per_image": true
+   },
+   "sonnet": {
+    "total_usd": 2.045109,
+    "per_image_usd": 0.00681703,
+    "pass_per_image": true
+   },
+   "eval_total_usd": 2.747811,
+   "pass_total": true
+  }
+ },
+ "noninferiority_haiku_vs_sonnet": {
+  "original": {
+   "drug": {
+    "diff": -0.053333333333333344,
+    "ci95": [
+     -0.07666666666666666,
+     -0.030000000000000027
+    ],
+    "ci_method": "cluster_bootstrap",
+    "noninferior": false
+   },
+   "dose": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   },
+   "days": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   }
+  },
+  "tilt": {
+   "drug": {
+    "diff": -0.06666666666666665,
+    "ci95": [
+     -0.09333333333333338,
+     -0.043333333333333335
+    ],
+    "ci_method": "cluster_bootstrap",
+    "noninferior": false
+   },
+   "dose": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   },
+   "days": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   }
+  },
+  "noise": {
+   "drug": {
+    "diff": -0.05666666666666664,
+    "ci95": [
+     -0.08333333333333337,
+     -0.030000000000000027
+    ],
+    "ci_method": "cluster_bootstrap",
+    "noninferior": false
+   },
+   "dose": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   },
+   "days": {
+    "diff": 0.0,
+    "ci95": [
+     -0.03621669264517641,
+     0.03621669264517641
+    ],
+    "ci_method": "clopper_pearson_discordant",
+    "noninferior": true
+   }
+  }
+ }
+}
