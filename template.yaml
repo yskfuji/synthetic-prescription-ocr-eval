@@ -108,7 +108,7 @@ Resources:
         - {AttributeName: engineRun, KeyType: RANGE}
       SSESpecification: {SSEEnabled: true}
 
-  # ---------- エンジン1: Claude Haiku 5.5 ----------
+  # ---------- エンジン1 ----------
   HaikuDlq:
     Type: AWS::SQS::Queue
     Properties:
@@ -175,7 +175,7 @@ Resources:
             FunctionResponseTypes: [ReportBatchItemFailures]
             ScalingConfig: {MaximumConcurrency: 2} # RPM 上限10に合わせて最小値にする
 
-  # ---------- エンジン2: Claude Sonnet 5.5 ----------
+  # ---------- エンジン2 ----------
   SonnetDlq:
     Type: AWS::SQS::Queue
     Properties:
